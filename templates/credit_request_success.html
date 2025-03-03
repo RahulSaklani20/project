@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Request Submitted</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-box">
+            <h1>Credit Request Submitted</h1>
+            <p>Your request for additional credits has been successfully submitted. An admin will review your request shortly.</p>
+            <a href="{{ url_for('profile') }}" class="btn">Back to Profile</a>
+        </div>
+    </div>
+</body>
+</html>

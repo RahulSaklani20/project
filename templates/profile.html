@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="profile-box">
+            <h1>Profile</h1>
+            <div class="profile-info">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                {% if user.username == 'admin' %}
+                <p><strong>Credits:</strong> Unlimited</p>
+                {% else %}
+                <p><strong>Credits:</strong>{{user.credits}}</p>
+                {% endif %}
+            </div>
+            <div class="actions">
+                <a href="{{ url_for('scan') }}" class="btn">Upload Document</a>
+                {% if user.username == 'admin' %}
+                <a href="{{ url_for('admin_credit_requests') }}" class="btn">Approve Credits</a>
+                {% else %}
+                <a href="{{ url_for('credit_request') }}" class="btn">Request Credits</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

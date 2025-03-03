@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Scan Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        async function uploadDocument() {
+            const fileInput = document.getElementById('file');
+            const resultDiv = document.getElementById('result');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to upload and scan document');
+                }
+
+                const data = await response.json();
+                displayResults(data.matching_documents);
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        function displayResults(matchingDocs) {
+            const resultDiv = document.getElementById('result');
+
+            if (matchingDocs.length === 0) {
+                resultDiv.innerHTML = '<p class="no-results">No matching documents found.</p>';
+                return;
+            }
+
+            let html = '<h2>Matching Documents</h2>';
+            html += '<ul class="matching-docs">';
+            matchingDocs.forEach(doc => {
+                html += `<li>
+                    <strong>Document ID:</strong> ${doc.id}<br>
+                    <strong>Levenshtein Similarity:</strong> ${doc.levenshtein_similarity.toFixed(2)}<br>
+                    <strong>Cosine Similarity:</strong> ${doc.cosine_similarity.toFixed(2)}<br>
+                    <strong>Combined Score:</strong> ${doc.combined_score.toFixed(2)}
+                </li>`;
+            });
+            html += '</ul>';
+
+            resultDiv.innerHTML = html;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="scan-box">
+            <h1>Upload and Scan Document</h1>
+            <form onsubmit="event.preventDefault(); uploadDocument();">
+                <div class="form-group">
+                    <label for="file">Choose a text file:</label>
+                    <input type="file" id="file" name="file" accept=".txt" required>
+                </div>
+                <button type="submit" class="btn">Upload and Scan</button>
+            </form>
+            <div class="nav-links">
+                <a href="{{ url_for('profile') }}" class="btn btn-back">Back to Profile</a>
+            </div>
+
+            <div id="result" class="results-section"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="admin-box">
+            <h1>Admin Dashboard</h1>
+            <div class="analytics">
+                <h2>Scan Statistics</h2>
+                <ul class="stats-list">
+                    {% for stat in analytics.scan_stats %}
+                        <li>
+                            <span class="username">{{ stat[0] }}</span>
+                            <span class="count">{{ stat[1] }} scans</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <h2>Credit Usage</h2>
+                <ul class="stats-list">
+                    {% for stat in analytics.scan_stats %}
+                        <li>
+                            <span class="username">{{ stat[0] }}</span>
+                            <span class="count">{{ stat[1] }} credits used</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="actions">
+                <a href="{{ url_for('admin_credit_requests') }}" class="btn btn-primary">Approve Credit Requests</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

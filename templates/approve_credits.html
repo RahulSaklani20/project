@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve Credit Requests</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="approve-credits-box">
+            <h1>Approve Credit Requests</h1>
+            <div class="requests-list">
+                {% if pending_requests %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Username</th>
+                                <th>Requested Credits</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in pending_requests %}
+                                <tr>
+                                    <td>{{ request[0] }}</td>
+                                    <td>{{ request[1] }}</td>
+                                    <td>{{ request[2] }}</td>
+                                    <td class="actions">
+                                        <a href="{{ url_for('approve_request', request_id=request[0]) }}" class="btn btn-approve">Approve</a>
+                                        <a href="{{ url_for('deny_request', request_id=request[0]) }}" class="btn btn-deny">Deny</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="no-requests">No pending credit requests.</p>
+                {% endif %}
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('admin_analytics') }}" class="btn btn-back">Back to Admin Dashboard</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
